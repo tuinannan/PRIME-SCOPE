@@ -21,8 +21,8 @@ To execute the covert channel PoC:
 
 3. Edit the `covert.h` file to set the covert channel parameters (as specified in the figure.)
 
-    Note that these covert channel parameters are finetuned for an Intel i5-7500 (Kaby Lake, 12-way LLC). To make the P+S based covert channel work (and optimized) for your platform, you will very likely have to change these parameters. Also set the clock frequency in order for the capacity calculations to be correct.
+    Note that these covert channel parameters are finetuned for an Intel i5-7500 (Kaby Lake, 12-way LLC). To make the P+S-based covert channel work (and optimized) for your platform, you will very likely have to change these parameters. Also, set the clock frequency in order for the capacity calculations to be correct.
 
 4. Compile with `make`, and run with `make run`. This will also invoke the `analyze.py` script that generates the statistics for the covert channel run.
-    - (If the program terminates with segmentation fault, one possible cause is that `MESSAGE_LEN` is too large compared to the stack size.
+    - (If the program terminates with a segmentation fault, one possible cause is that `MESSAGE_LEN` is too large compared to the stack size.
     Check whether the problem persists after `ulimit -s unlimited`.)

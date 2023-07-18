@@ -24,16 +24,16 @@ associativity of the target machine's LLC.
 
 ### Execution
 
-The file to execute `PrimeTime` is `execute_PS.sh`, besides its content is the
-way to control the execution. It is a bash script to execute a set of 
+The file to execute `PrimeTime` is `execute_PS.sh`.
+It is a bash script to execute a set of 
 operations, each requiring several operands. These operations will allow it to 
 create an initial set of `prime` patterns, measure their performance, and 
 filter well-performing ones. The list of available operations and the operands 
 they expect are explained on the top of the file. Depending on the requested 
 operations, the execution can take a few hours. Once the execution is finished, 
-the `log/sorted.txt` file is created, which list the best performing patterns. 
+the `log/sorted.txt` file is created, which lists the best-performing patterns. 
 In addition, the C implementation of these patterns can be found in 
-`primeapp/prime.c`, which were used for measurements.
+`primeapp/prime.c`.
 
 This `log/sorted.txt` file provides a sorted list of the found prime patterns, 
 and has the following structure:
@@ -45,9 +45,9 @@ B504_S3                3 100.0  99.8 [1082, 1372, 2603] 0123
 
 * The first column refers to the name of the pattern. The corresponding pattern 
 can be found in the `primeapp/prime.c` file, with the same name.
-* The next column is for how many iterations are used. If is is, e.g., 2, the prime function should be executed twice to obtaining the given result.
+* The next column is for how many iterations are used. If it is, e.g., 2, the prime function should be executed twice to obtain the given result.
 * The next two columns are respectively for EV and EVC rates. The former 
-indicates how successfull the pattern is for eviction, the latter indicates how 
+indicates how successful the pattern is for eviction, the latter indicates how 
 successful it is for setting the eviction candidate in the LLC, while keeping it in L1.
   - The former property is relevant for a `Prime+Probe` attack, while the latter property defines the success of a `Prime+Scope` attack.
 * The three next columns list the execution times of the corresponding 
@@ -75,12 +75,12 @@ Currently, two creation types are supported, namely `var0` and `var1`. The forme
 
 In response to the `execution` operation in `execute_PS.sh`, first the patterns from a given log file (could be created by the above or below routine) are converted into a C code implementation. This code is the `primeapp/prime.c` file, having a separate function for each pattern. 
 
-- Important: depending on the number of iterations in `execution`, the required stack size for the generated C program may exceed the defaults on your system (leading to a termination with segmentation fault.)
-Therefore, we recommend to increase the stack size, e.g., as `ulimit -s unlimited`.
+- Important: depending on the number of iterations in `execution`, the required stack size for the generated C program may exceed the defaults on your system (leading to a termination with a segmentation fault.)
+Therefore, we recommend increasing the stack size, e.g., as `ulimit -s unlimited`.
 
 
 For example, the access pattern `01b23` may be converted into C as follows (see also Figure 4 in the paper).
-The function receives a pointer to an array that contains the eviction set, and performs accesses over it.
+The function receives a pointer to an array that contains the eviction set and performs accesses over it.
 
 ```
 void traverse_B504_E0002_S1(uint64_t* arr) {
@@ -101,11 +101,11 @@ candidate after calling each access pattern function. For each pattern, it perfo
 ### PrimeBot Evaluating the Measurements
 
 This step analyses the log file created by the execution and 
-filters the best performing patterns by their effectiveness of setting the eviction candidate correctly or by the execution time of doing it. The output file can be used as an input file for a new `execution` command (described above) for iteratively searching for best performing patterns. Indeed the iterative execution can be observed in the `execute_PS.sh` file.
+filters the best-performing patterns by their effectiveness of setting the eviction candidate correctly or by the execution time of doing it. The output file can be used as an input file for a new `execution` command (described above) for iteratively searching for best-performing patterns. Indeed the iterative execution can be observed in the `execute_PS.sh` file.
 
 ___
 
 
 ## PrimeTime for Prime+Probe
 
-For `Prime+Probe`, an additional `execute_PP.sh` is provided. In this case, high EV rate is needed, while EVC rate is unimportant. As it does not require a high EVC rate, it works with loose constraints, so it finds the prime patterns in shorter time.
+For `Prime+Probe`, an additional `execute_PP.sh` is provided. In this case, a high EV rate is needed, while the EVC rate is unimportant. As it does not require a high EVC rate, it works with looser constraints, so it finds the prime patterns in a shorter time.

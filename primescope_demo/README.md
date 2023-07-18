@@ -22,28 +22,28 @@ The app contains two tests:
 
     The helper thread is killed when it is no longer needed.
 
-    For a successful use of Prime+Scope, you will need an eviction set for the LLC (inclusive Intel caches) or the CD (non-inclusive Intel caches). For this, the code uses the eviction set construction code in [evsets](../evsets), as described in Section 6.5 of the paper. If you are unable to construct an eviction set on your platform, this should be addressed first. For this, the following test may be interesting.
+    To use Prime+Scope successfully, you will need an eviction set for the LLC (inclusive Intel caches) or the CD (non-inclusive Intel caches). For this, the code uses the eviction set construction code in [evsets](../evsets), as described in Section 6.5 of the paper. If you are unable to construct an eviction set on your platform, this should be addressed first. For this, the following test may be interesting.
 
 2. Eviction Set Construction
 
-    The `attacker` thread continuously constructs eviction sets, and prints some statistical information about how successful it is.
+    The `attacker` thread continuously constructs eviction sets and prints some statistical information about how successful it is.
 
     The `victim` thread is not used in this test case.
 
 ## Configuration
 
-Starting with `configuration.h` is essential. You must input the cache information of the target machine correctly, and set the execution parameters. To help users, the `configuration.h` file is commented thorougly.
+Starting with `configuration.h` is essential. You must input the cache information of the target machine correctly and set the execution parameters. To help users, the `configuration.h` file is commented thoroughly.
 
 
 While editing `configuration.h`, **pay special attention to the following parameters:**
 
 1. `{ATTACKER,HELPER,VICTIM}_CORE`
 
-    Core affinities of the threads.  In case of a hyperthreaded machine, logical siblings can be learned, e.g., through: `cat /sys/devices/system/cpu/cpu0/topology/thread_siblings_list`
+    Core affinities of the threads. In the case of a hyperthreaded machine, logical siblings can be learned, e.g., through: `cat /sys/devices/system/cpu/cpu0/topology/thread_siblings_list`
 
 2. `HUGE_PAGES_AVAILABLE`
 
-    If hugepages are available on the machine, indicate it. All PoCs in this repository should work with small pages too (hence, this is the default setting), but enabling huge pages may increase robustness on your system.
+    If hugepages are available on the machine, indicate it. All PoCs in this repository should work with small pages too (hence, this is the default setting), but enabling huge pages may increase the robustness on your system.
 
 3. `PLATFORM`
     
