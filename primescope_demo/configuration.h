@@ -6,8 +6,8 @@
 // #define KABYLAKE12
 // #define KABYLAKE16
 // #define COFFEELAKE12
-// #define SKYLAKE16
-#define SKYLAKE12
+#define SKYLAKE16
+//#define SKYLAKE12
 // #define HASWELL16
 // #define HASWELL12
 // #define IVYBRIDGE16
@@ -44,15 +44,15 @@
   In case of a hyperthreaded machine, logical siblings can be learned, e.g.: 
   cat /sys/devices/system/cpu/cpu0/topology/thread_siblings_list 
 */
-#define ATTACKER_CORE   1
+#define ATTACKER_CORE   2
 #define HELPER_CORE     3
-#define VICTIM_CORE     5
+#define VICTIM_CORE     1
 
 ////////////////////////////////////////////////////////////////////////////////
 // Application Specific Configuration
 
 /* If huge pages are available, indicate it. */
-#define HUGE_PAGES_AVAILABLE  0
+#define HUGE_PAGES_AVAILABLE  1
 
 #include "../utils/memory_sizes.h"    // For KB, MB, GB
 #define EVICT_L1_SIZE         ( 8*MB)

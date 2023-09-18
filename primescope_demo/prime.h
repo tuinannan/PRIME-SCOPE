@@ -46,8 +46,6 @@ void traverse_Intel_Xeon_Silver_4208(Elem*    list); // 2019 | Xeon Silver  | No
 
 #ifdef SKYLAKE16
   #define PRIME(x) ({               \
-    traverse_Intel_Core_i7_6700(x); \
-    traverse_Intel_Core_i7_6700(x); \
     traverse_Intel_Core_i7_6700(x); })
 #endif
 

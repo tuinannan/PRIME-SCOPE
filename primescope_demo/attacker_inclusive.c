@@ -103,7 +103,7 @@ void test_primescope() {
   //////////////////////////////////////////////////////////////////////////////
   // Eviction Set Construction
 
-  #define EV_LLC LLC_WAYS
+  #define EV_LLC LLC_WAYS+2
 
 #if PREMAP_PAGES == 1
   ps_evset_premap(evict_mem);
@@ -134,7 +134,7 @@ repeat_evset:
   uint64_t evset[EV_LLC]; list_to_array(evsetList, evset);
   
   // Set its first element as the scope_addr
-  uint64_t scope_addr = evset[0];
+  uint64_t scope_addr = evset[EV_LLC-1];
 
   //////////////////////////////////////////////////////////////////////////////
   // Prime+Scope (Toy Example)
@@ -143,23 +143,22 @@ repeat_evset:
 
   int access_time, success=0;
 
+  for(int i =0; i < EV_LLC; i++)
+  {
+    asm volatile("clflush 0(%0)": : "r" (evset[i]):);
+    asm volatile("mfence");
+    asm volatile("lfence");
+  }
+
   for (int t=0; t<TEST_LEN; t++) {
 
     PRIME(evset);
-    TIME_READ_ACCESS(scope_addr);
-    TIME_READ_ACCESS(scope_addr);
-
-    // Sanity check: the scope_addr is in low-level cache (L1).
-
-    if (access_time<thrLLC)  
-          printf(GREEN"\tSuccess at test %d\n"NC, t);
-    else  printf(RED  "\tFailure at test %d\n"NC, t);
-
-    ////////////////////////////////////////////////////////////////////////////
-
     PRIME(evset);
-    TIME_READ_ACCESS(scope_addr);    // SCOPE 
-    TIME_READ_ACCESS(scope_addr);    // SCOPE
+    //asm volatile("mfence");
+    asm volatile("lfence");
+    asm volatile("prefetchnta 0(%0)": : "r" (evset[EV_LLC-1]):);
+    //asm volatile("mfence");
+    
     VICTIM_READ_ACCESS(target_addr); // Cross-core access to monitored set
     TIME_READ_ACCESS(scope_addr);    // SCOPE detects access
 

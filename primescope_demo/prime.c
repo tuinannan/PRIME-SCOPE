@@ -67,6 +67,7 @@ void traverse_Intel_Core_i5_7500 (uint64_t* arr) {
 // 2015 | Skylake      | Inclusive LLC with 16 Ways | 3 Repeats
 void traverse_Intel_Core_i7_6700 (uint64_t* arr) {
   int i;
+  /*
   for(i=0; i<13; i+=4) {
     maccess((void *) arr[i+0]);
     maccess((void *) arr[i+1]);
@@ -85,6 +86,11 @@ void traverse_Intel_Core_i7_6700 (uint64_t* arr) {
     maccess((void *) arr[i+2]);
     maccess((void *) arr[i+3]);
   }
+  */
+  for(i = 0; i < 16; i+=1)
+    maccess((void *) arr[i]);
+    //asm volatile("mfence");
+    //asm volatile("lfence");
 }
 
 // 2015 | Skylake      | Inclusive LLC with 12 Ways | 4 Repeats
